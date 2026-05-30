@@ -57,7 +57,7 @@ market_dashboard/
 │
 ├── README.md
 └── requirements.txt
-
+```
 
 ---
 
