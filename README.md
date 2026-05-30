@@ -63,3 +63,13 @@ market_dashboard/
 │
 ├── README.md
 └── requirements.txt
+
+
+
+
+## Current Features
+
+- Interactive ticker selection
+- Historical price visualization
+- Monthly returns visualization
+- Plotly interactive charts
