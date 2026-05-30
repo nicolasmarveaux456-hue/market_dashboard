@@ -36,26 +36,28 @@ The dashboard is built using Streamlit and Plotly.
 - Transaction costs analysis
 - Robustness analysis
 
+
 ---
 
 ## Project Structure
 
+```text
 market_dashboard/
-
+│
 ├── app/
 │   └── dashboard.py
-
+│
 ├── data/
-
+│
 ├── notebooks/
-
+│
 ├── src/
 │   ├── data_loader.py
 │   └── charts.py
-
+│
 ├── README.md
-
 └── requirements.txt
+
 
 ---
 
@@ -67,4 +69,3 @@ market_dashboard/
 - Pandas
 - NumPy
 - Matplotlib
-
