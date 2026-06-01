@@ -12,16 +12,19 @@ from src.data_loader import load_prices
 from src.data_loader import load_returns
 from src.data_loader import load_backtest_summary
 from src.data_loader import load_performance_metrics
+from src.data_loader import load_transaction_costs_summary
 
 from src.charts import price_chart
 from src.charts import returns_chart
 from src.charts import strategy_vs_benchmark_chart
+from src.charts import drawdown_chart
+from src.charts import rolling_volatility_chart
+from src.charts import turnover_chart
+from src.charts import gross_vs_net_chart
 
 
 st.set_page_config(page_title="European Momentum Dashboard",layout="wide")
-
 st.title("European Momentum Dashboard")
-
 st.write("Interactive monitoring of the momentum strategy.")
 
 # Load data
@@ -29,11 +32,12 @@ prices = load_prices()
 returns = load_returns()
 backtest_summary = load_backtest_summary()
 performance_metrics = load_performance_metrics()
+transaction_costs_summary = load_transaction_costs_summary()
 
 
 # Sidebar navigation
 st.sidebar.header("Navigation")
-section = st.sidebar.radio("Select a section",["Market Data","Strategy Performance"])
+section = st.sidebar.radio("Select a section",["Market Data","Strategy Performance","Risk Analysis"])
 
 
 # Section 1 — Market Data
@@ -97,4 +101,55 @@ if section == "Strategy Performance":
         - CAGR : annualized compounded return
         - Volatility : annualized risk
         - Sharpe Ratio : risk-adjusted performance
+        """)
+        
+        
+# Section 3 — Risk Analysis
+if section == "Risk Analysis":
+    st.header("Risk Analysis")
+    st.write("""
+        This section analyzes the risk profile of the momentum strategy.
+
+        It includes:
+        - drawdown analysis
+        - 12-month rolling volatility
+        - portfolio turnover
+        - gross vs net performance after transaction costs
+        """)
+    st.subheader("Drawdown Analysis")
+    st.plotly_chart(drawdown_chart(backtest_summary),use_container_width=True)
+    strategy_max_dd = (backtest_summary["Strategy Equity"]/ backtest_summary["Strategy Equity"].cummax() - 1).min()
+    fez_max_dd = (backtest_summary["FEZ Equity"]/ backtest_summary["FEZ Equity"].cummax() - 1).min()
+
+    col1, col2 = st.columns(2)
+    col1.metric("Strategy Max Drawdown", f"{strategy_max_dd:.2%}")
+    col2.metric("FEZ Max Drawdown", f"{fez_max_dd:.2%}")
+
+    st.subheader("12-Month Rolling Volatility")
+    st.plotly_chart(rolling_volatility_chart(backtest_summary),use_container_width=True)
+    st.subheader("Portfolio Turnover")
+    st.plotly_chart(turnover_chart(transaction_costs_summary),use_container_width=True)
+
+    average_turnover = transaction_costs_summary["Turnover"].mean()
+    st.metric("Average Monthly Turnover", f"{average_turnover:.2%}")
+    st.subheader("Gross vs Net Performance")
+    st.plotly_chart(gross_vs_net_chart(transaction_costs_summary),use_container_width=True)
+
+    final_gross = transaction_costs_summary["Gross Equity"].iloc[-1]
+    final_net = transaction_costs_summary["Net Equity"].iloc[-1]
+
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Final Gross Equity", f"{final_gross:.2f}")
+    col2.metric("Final Net Equity", f"{final_net:.2f}")
+    col3.metric("Cost Impact", f"{final_gross - final_net:.2f}")
+
+    st.subheader("Interpretation")
+    st.write("""
+        The drawdown chart highlights downside risk by showing losses from previous peaks.
+
+        Rolling volatility shows how the risk of the strategy changes over time.
+
+        Turnover measures how much the portfolio changes each month and directly drives transaction costs.
+
+        Comparing gross and net performance helps assess whether the strategy remains attractive after implementation costs.
         """)

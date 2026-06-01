@@ -32,13 +32,19 @@ The dashboard is built using Streamlit and Plotly.
 - Performance metrics display
 - CAGR, volatility and Sharpe ratio cards
 
+### Risk Analysis
+
+- Drawdown analysis
+- Rolling volatility chart
+- Portfolio turnover visualization
+- Gross vs net performance comparison
+- Transaction cost impact metrics
 ---
 
 ## Upcoming Features
 
-- Drawdown analysis
-- Transaction costs analysis
 - Robustness analysis
+- Portfolio composition exploration
 
 ---
 

@@ -32,3 +32,10 @@ def load_performance_metrics():
     Load performance metrics for the strategy and benchmark.
     """
     return pd.read_csv(DATA_DIR / "performance_metrics.csv",index_col=0)
+
+
+def load_transaction_costs_summary():
+    """
+    Load turnover, transaction costs and net strategy performance.
+    """
+    return pd.read_csv(DATA_DIR / "transaction_costs_summary.csv",index_col=0,parse_dates=True)
