@@ -25,17 +25,20 @@ The dashboard is built using Streamlit and Plotly.
 - Monthly returns visualization
 - Plotly interactive charts
 
+### Strategy Performance
+
+- Momentum strategy equity curve
+- FEZ benchmark comparison
+- Performance metrics display
+- CAGR, volatility and Sharpe ratio cards
+
 ---
 
 ## Upcoming Features
 
-- Momentum strategy performance
-- FEZ benchmark comparison
-- Performance metrics
 - Drawdown analysis
 - Transaction costs analysis
 - Robustness analysis
-
 
 ---
 
